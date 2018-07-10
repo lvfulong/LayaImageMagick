@@ -14,67 +14,6 @@ argv[1] 输入文件 绝对路径
 argv[2] 输出文件 绝对路径
 */
 
-struct Fresp
-{
-    Fresp(bool negative, int exponent, float mantissa)
-        :negative(negative),
-        exponent(exponent),
-        mantissa(mantissa)
-    {}
-    bool negative = false;
-    int exponent = 0;
-    float mantissa = 0.0f;
-};
-// 把一個浮點數轉換成X*2^N的形式 
-// 比如8.000000 = 0.500000 * 2^4，123.45 = 0.964453 * 2^7
-Fresp SHARP_frexp(double d)
-{
-    // Translate the double into sign, exponent and mantissa.
-    int64_t bits = (int64_t)d;//BitConverter.DoubleToInt64Bits(d);
-    // Note that the shift is sign-extended, hence the test against -1 not 1
-    bool negative = (bits < 0);
-    int exponent = (int)((bits >> 52) & 0x7ffL);
-    int64_t mantissa = bits & 0xfffffffffffffL;
-
-    // Subnormal numbers; exponent is effectively one higher,
-    // but there's no extra normalisation bit in the mantissa
-    if (exponent == 0)
-    {
-        exponent++;
-    }
-    // Normal numbers; leave exponent as it is but add extra
-    // bit to the front of the mantissa
-    else
-    {
-        mantissa = mantissa | (1L << 52);
-    }
-
-    // Bias the exponent. It's actually biased by 1023, but we're
-    // treating the mantissa as m.0 rather than 0.m, so we need
-    // to subtract another 52 from it.
-    exponent -= 1075;
-
-    if (mantissa == 0)
-    {
-        return Fresp(false, 0, 0.0f);
-    }
-
-    /* Normalize */
-    while ((mantissa & 1) == 0)
-    {    /*  i.e., Mantissa is even */
-        mantissa >>= 1;
-        exponent++;
-    }
-
-    // 原來的算法是m.0*2^n 要換成0.m*2^n
-    float floatMantissa = mantissa;
-    while (floatMantissa > 1.0f - std::numeric_limits<float>::epsilon())
-    {
-        floatMantissa /= 2.0f;
-        exponent++;
-    }
-    return Fresp(negative, exponent, floatMantissa);
-}
 // 把HDR的Float類型轉成RGBE類型的像素
 void FloatRGB2RGBE(int InImageSize, Magick::Quantum* InPixelBuffer, unsigned char* OutRGBEBuffer)
 {
@@ -159,7 +98,35 @@ int main(int argc, char **argv)
         //view.sync();
         //imageOut.magick("PNG");
         //imageOut.write("E:\\laya\\LayaImageMagick\\LayaImageMagick\\Release\\Lightmap-0_comp_light.png");
-        imageOut.write(argv[2]);
+        //imageOut.write(argv[2]);
+
+        FILE *fp = fopen(argv[2],"wb");
+        if (fp == NULL)
+        {
+            cout << "fopen error" << endl;
+            fclose(fp);
+            return 1;
+        }
+
+        if (fwrite(&columns, sizeof(int), 1, fp) != 1)
+        {
+            cout << "fwrite columns error" << endl;
+            fclose(fp);
+            return 1;
+        }
+        if (fwrite(&rows, sizeof(int), 1, fp) != 1)
+        {
+            cout << "fwrite rows error" << endl;
+            fclose(fp);
+            return 1;
+        }
+        if (fwrite(rgbeBuffer, columns * rows * 4, 1, fp) != 1)
+        {
+            cout << "fwrite rgbeBuffer error" << endl;
+            fclose(fp);
+            return 1;
+        }
+        fclose(fp);
     }
     catch (Magick::Exception &error_)
     {
