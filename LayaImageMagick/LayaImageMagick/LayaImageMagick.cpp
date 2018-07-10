@@ -6,6 +6,7 @@
 #include <Magick++.h>
 #include <string>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 /*
@@ -75,7 +76,7 @@ Fresp SHARP_frexp(double d)
     return Fresp(negative, exponent, floatMantissa);
 }
 // 把HDR的Float類型轉成RGBE類型的像素
-void FloatRGB2RGBE(int InImageSize, Magick::Quantum* InPixelBuffer, char* OutRGBEBuffer)
+void FloatRGB2RGBE(int InImageSize, Magick::Quantum* InPixelBuffer, unsigned char* OutRGBEBuffer)
 {
 
     for (int i = 0; i < InImageSize; i++)
@@ -84,7 +85,7 @@ void FloatRGB2RGBE(int InImageSize, Magick::Quantum* InPixelBuffer, char* OutRGB
         Magick::Quantum green = InPixelBuffer[i * 4 + 1];
         Magick::Quantum blue = InPixelBuffer[i * 4 + 2];
 
-        Magick::Quantum maxValue = red;
+        double maxValue = red;
         if (green > maxValue) maxValue = green;
         if (blue > maxValue) maxValue = blue;
 
@@ -96,9 +97,8 @@ void FloatRGB2RGBE(int InImageSize, Magick::Quantum* InPixelBuffer, char* OutRGB
         else
         {
             int exponent = 0;
-            float mantissa = 0;
-            Fresp tuple = SHARP_frexp(maxValue);
-            if (tuple.negative)
+            double mantissa = frexp(maxValue, &exponent);
+            if (mantissa < 0)
             {
                 OutRGBEBuffer[i * 4 + 0] = OutRGBEBuffer[i * 4 + 1]
                     = OutRGBEBuffer[i * 4 + 2] = OutRGBEBuffer[i * 4 + 3] = 0;
@@ -106,15 +106,13 @@ void FloatRGB2RGBE(int InImageSize, Magick::Quantum* InPixelBuffer, char* OutRGB
             }
             else
             {
-                exponent = tuple.exponent;
-                mantissa = tuple.mantissa;
                 // 当某个值为v的时候，其尾数就是e[0]。 这里*256了，所以反向的时候有个/256即-(128+8)里的8
                 // e[0]永远不会为1所以结果<256
-                Magick::Quantum scaleRatio = (Magick::Quantum)(mantissa * 256.0f / maxValue);
-                OutRGBEBuffer[i * 4 + 0] = (char)(red * scaleRatio);
-                OutRGBEBuffer[i * 4 + 1] = (char)(green * scaleRatio);
-                OutRGBEBuffer[i * 4 + 2] = (char)(blue * scaleRatio);
-                OutRGBEBuffer[i * 4 + 3] = (char)(exponent + 128);
+                double scaleRatio = (double)(mantissa * 256.0f / maxValue);
+                OutRGBEBuffer[i * 4 + 0] = (unsigned char)(red * scaleRatio);
+                OutRGBEBuffer[i * 4 + 1] = (unsigned char)(green * scaleRatio);
+                OutRGBEBuffer[i * 4 + 2] = (unsigned char)(blue * scaleRatio);
+                OutRGBEBuffer[i * 4 + 3] = (unsigned char)(exponent + 128);
             }
         }
     }
@@ -122,6 +120,7 @@ void FloatRGB2RGBE(int InImageSize, Magick::Quantum* InPixelBuffer, char* OutRGB
 }
 int main(int argc, char **argv)
 {
+ 
     if (argc < 3)
     {
         cout << "Lack parameter"<< endl;
@@ -142,7 +141,7 @@ int main(int argc, char **argv)
         //Magick::Pixels view(image);
         //Magick::Quantum *pixels = view.get(0, 0, columns, rows);
         Magick::Quantum* fixedPixelBuffer = new  Magick::Quantum[columns * rows * 4];
-        char* rgbeBuffer = new char[columns * rows * 4];
+        unsigned char* rgbeBuffer = new unsigned char[columns * rows * 4];
         ssize_t i = 0;
         for (ssize_t r = 0; r < rows; ++r)
         {
