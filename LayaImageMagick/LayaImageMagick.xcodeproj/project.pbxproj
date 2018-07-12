@@ -204,6 +204,8 @@
 					LayaImageMagick/ThirdParty/lib/mac/freetype,
 					LayaImageMagick/ThirdParty/lib/mac/libpng,
 					LayaImageMagick/ThirdParty/lib/mac/openexr,
+					LayaImageMagick/ThirdParty/lib/mac/jpeg,
+					LayaImageMagick/ThirdParty/lib/mac/ilmbase,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -213,11 +215,16 @@
 					"-lMagick++-7.Q16HDRI",
 					"-lMagickCore-7.Q16HDRI",
 					"-lMagickWand-7.Q16HDRI",
-					"-lltdl",
-					"-lfreetype",
 					"-lpng16",
 					"-lIlmImfUtil",
 					"-lIlmImf",
+					"-ljpeg",
+					"-lHalf",
+					"-lIex",
+					"-lIexMath",
+					"-lIlmThread",
+					"-lImath",
+					"-lltdl",
 				);
 				SDKROOT = macosx;
 			};
@@ -274,6 +281,8 @@
 					LayaImageMagick/ThirdParty/lib/mac/freetype,
 					LayaImageMagick/ThirdParty/lib/mac/libpng,
 					LayaImageMagick/ThirdParty/lib/mac/openexr,
+					LayaImageMagick/ThirdParty/lib/mac/jpeg,
+					LayaImageMagick/ThirdParty/lib/mac/ilmbase,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -282,11 +291,16 @@
 					"-lMagick++-7.Q16HDRI",
 					"-lMagickCore-7.Q16HDRI",
 					"-lMagickWand-7.Q16HDRI",
-					"-lltdl",
-					"-lfreetype",
 					"-lpng16",
 					"-lIlmImfUtil",
 					"-lIlmImf",
+					"-ljpeg",
+					"-lHalf",
+					"-lIex",
+					"-lIexMath",
+					"-lIlmThread",
+					"-lImath",
+					"-lltdl",
 				);
 				SDKROOT = macosx;
 			};

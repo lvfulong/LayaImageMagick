@@ -30,7 +30,7 @@ extern "C" {
 #define MagickLibVersion  0x708
 #define MagickLibVersionText  "7.0.8"
 #define MagickLibVersionNumber  6,0,0
-#define MagickLibAddendum  "-6"
+#define MagickLibAddendum  "-5"
 #define MagickLibInterface  6
 #define MagickLibMinInterface  6
 #if defined(_WINDOWS)
@@ -44,14 +44,14 @@ extern "C" {
 #endif
 #define MagickppLibVersionText  "7.0.8"
 #define MagickppLibVersionNumber  4:0:0
-#define MagickppLibAddendum  "-6"
+#define MagickppLibAddendum  "-5"
 #define MagickppLibInterface  4
 #define MagickppLibMinInterface  4
 #define MagickReleaseDate  "2018-07-12"
 #define MagickAuthoritativeLicense  \
   "https://www.imagemagick.org/script/license.php"
 #define MagickAuthoritativeURL  "https://www.imagemagick.org"
-#define MagickHomeURL  "file:///usr/local/Cellar/imagemagick/7.0.8-6/share/doc/ImageMagick-7/index.html"
+#define MagickHomeURL  "file:///opt/share/doc/ImageMagick-7/index.html"
 #if (MAGICKCORE_QUANTUM_DEPTH == 8)
 #define MagickQuantumDepth  "Q8"
 #define MagickQuantumRange  "255"
