@@ -67,7 +67,8 @@ int main(int argc, char **argv)
         return 1;
     }
     Magick::InitializeMagick(*argv);
-    
+    Magick::Quantum* fixedPixelBuffer;
+    unsigned char* rgbeBuffer;
     try {
         Magick::Image image;
         image.read(argv[1]);
@@ -80,8 +81,8 @@ int main(int argc, char **argv)
         Magick::Quantum *pixels = image.getPixels(0, 0, columns, rows);
         //Magick::Pixels view(image);
         //Magick::Quantum *pixels = view.get(0, 0, columns, rows);
-        Magick::Quantum* fixedPixelBuffer = new  Magick::Quantum[columns * rows * 4];
-        unsigned char* rgbeBuffer = new unsigned char[columns * rows * 4];
+        fixedPixelBuffer = new  Magick::Quantum[columns * rows * 4];
+        rgbeBuffer = new unsigned char[columns * rows * 4];
         ssize_t i = 0;
         for (ssize_t r = 0; r < rows; ++r)
         {
@@ -96,45 +97,29 @@ int main(int argc, char **argv)
         //把HDR的Float類型轉成RGBE類型的像素
         FloatRGB2RGBE(columns * rows, fixedPixelBuffer, rgbeBuffer);
         Magick::Image imageOut(columns, rows, "RGBA", Magick::StorageType::CharPixel, rgbeBuffer);
-        //view.sync();
-        //imageOut.magick("PNG");
-        //imageOut.write("E:\\laya\\LayaImageMagick\\LayaImageMagick\\Release\\Lightmap-0_comp_light.png");
-        //imageOut.write(argv[2]);
+        imageOut.magick("PNG");
+        if (argc >= 4)
+        {
+            int quality = atoi(argv[3]);
+            cout << "quality: " << quality << endl;
+            if (quality > 0)
+            {
+                imageOut.quality(quality);
+            }
+        }
+        imageOut.write(argv[2]);
 
-        FILE *fp = fopen(argv[2],"wb");
-        if (fp == NULL)
-        {
-            cout << "fopen error" << endl;
-            fclose(fp);
-            return 1;
-        }
-
-        if (fwrite(&columns, sizeof(int), 1, fp) != 1)
-        {
-            cout << "fwrite columns error" << endl;
-            fclose(fp);
-            return 1;
-        }
-        if (fwrite(&rows, sizeof(int), 1, fp) != 1)
-        {
-            cout << "fwrite rows error" << endl;
-            fclose(fp);
-            return 1;
-        }
-        if (fwrite(rgbeBuffer, columns * rows * 4, 1, fp) != 1)
-        {
-            cout << "fwrite rgbeBuffer error" << endl;
-            fclose(fp);
-            return 1;
-        }
-        fclose(fp);
     }
     catch (Magick::Exception &error_)
     {
+        delete [] fixedPixelBuffer;
+        delete [] rgbeBuffer;
         cout << "Caught exception: " << error_.what() << endl;
         Magick::TerminateMagick();
         return 1;
     }
+    delete [] fixedPixelBuffer;
+    delete [] rgbeBuffer;
     Magick::TerminateMagick();
     return 0;
 }
