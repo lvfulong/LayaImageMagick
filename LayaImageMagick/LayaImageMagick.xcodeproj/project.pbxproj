@@ -203,6 +203,7 @@
 					LayaImageMagick/ThirdParty/lib/mac/libtool,
 					LayaImageMagick/ThirdParty/lib/mac/freetype,
 					LayaImageMagick/ThirdParty/lib/mac/libpng,
+					LayaImageMagick/ThirdParty/lib/mac/openexr,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -215,6 +216,8 @@
 					"-lltdl",
 					"-lfreetype",
 					"-lpng16",
+					"-lIlmImfUtil",
+					"-lIlmImf",
 				);
 				SDKROOT = macosx;
 			};
@@ -270,6 +273,7 @@
 					LayaImageMagick/ThirdParty/lib/mac/libtool,
 					LayaImageMagick/ThirdParty/lib/mac/freetype,
 					LayaImageMagick/ThirdParty/lib/mac/libpng,
+					LayaImageMagick/ThirdParty/lib/mac/openexr,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -281,6 +285,8 @@
 					"-lltdl",
 					"-lfreetype",
 					"-lpng16",
+					"-lIlmImfUtil",
+					"-lIlmImf",
 				);
 				SDKROOT = macosx;
 			};
