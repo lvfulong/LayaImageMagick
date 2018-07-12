@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		A25A5E5120F621DF00D812B1 /* LayaImageMagick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A25A5E5020F621DF00D812B1 /* LayaImageMagick.cpp */; };
+		A28BB28520F7094F00DB1CB8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A28BB28120F7089500DB1CB8 /* libz.tbd */; };
+		A28BB28720F709D400DB1CB8 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A28BB28620F709D400DB1CB8 /* libbz2.tbd */; };
+		A28BB28920F7217B00DB1CB8 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A28BB28820F7217B00DB1CB8 /* libxml2.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,10 @@
 /* Begin PBXFileReference section */
 		A25A5E4320F61EE100D812B1 /* LayaImageMagick */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LayaImageMagick; sourceTree = BUILT_PRODUCTS_DIR; };
 		A25A5E5020F621DF00D812B1 /* LayaImageMagick.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayaImageMagick.cpp; sourceTree = "<group>"; };
+		A28BB28120F7089500DB1CB8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		A28BB28320F708B000DB1CB8 /* libbz2.1.0.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.5.tbd; path = usr/lib/libbz2.1.0.5.tbd; sourceTree = SDKROOT; };
+		A28BB28620F709D400DB1CB8 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		A28BB28820F7217B00DB1CB8 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +39,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A28BB28920F7217B00DB1CB8 /* libxml2.tbd in Frameworks */,
+				A28BB28720F709D400DB1CB8 /* libbz2.tbd in Frameworks */,
+				A28BB28520F7094F00DB1CB8 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +53,7 @@
 			children = (
 				A25A5E4520F61EE100D812B1 /* LayaImageMagick */,
 				A25A5E4420F61EE100D812B1 /* Products */,
+				A28BB28020F7089500DB1CB8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +71,17 @@
 				A25A5E5020F621DF00D812B1 /* LayaImageMagick.cpp */,
 			);
 			path = LayaImageMagick;
+			sourceTree = "<group>";
+		};
+		A28BB28020F7089500DB1CB8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A28BB28820F7217B00DB1CB8 /* libxml2.tbd */,
+				A28BB28620F709D400DB1CB8 /* libbz2.tbd */,
+				A28BB28320F708B000DB1CB8 /* libbz2.1.0.5.tbd */,
+				A28BB28120F7089500DB1CB8 /* libz.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,7 +198,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				LIBRARY_SEARCH_PATHS = LayaImageMagick/ThirdParty/lib/mac;
+				LIBRARY_SEARCH_PATHS = (
+					LayaImageMagick/ThirdParty/lib/mac/ImageMagick,
+					LayaImageMagick/ThirdParty/lib/mac/libtool,
+					LayaImageMagick/ThirdParty/lib/mac/freetype,
+					LayaImageMagick/ThirdParty/lib/mac/libpng,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -185,6 +212,9 @@
 					"-lMagick++-7.Q16HDRI",
 					"-lMagickCore-7.Q16HDRI",
 					"-lMagickWand-7.Q16HDRI",
+					"-lltdl",
+					"-lfreetype",
+					"-lpng16",
 				);
 				SDKROOT = macosx;
 			};
@@ -235,7 +265,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				LIBRARY_SEARCH_PATHS = LayaImageMagick/ThirdParty/lib/mac;
+				LIBRARY_SEARCH_PATHS = (
+					LayaImageMagick/ThirdParty/lib/mac/ImageMagick,
+					LayaImageMagick/ThirdParty/lib/mac/libtool,
+					LayaImageMagick/ThirdParty/lib/mac/freetype,
+					LayaImageMagick/ThirdParty/lib/mac/libpng,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "-ILayaImageMagick/ThirdParty/include/mac/ImageMagick/";
@@ -243,6 +278,9 @@
 					"-lMagick++-7.Q16HDRI",
 					"-lMagickCore-7.Q16HDRI",
 					"-lMagickWand-7.Q16HDRI",
+					"-lltdl",
+					"-lfreetype",
+					"-lpng16",
 				);
 				SDKROOT = macosx;
 			};
