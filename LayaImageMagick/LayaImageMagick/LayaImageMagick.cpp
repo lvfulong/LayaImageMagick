@@ -67,8 +67,8 @@ int main(int argc, char **argv)
         return 1;
     }
     Magick::InitializeMagick(*argv);
-    Magick::Quantum* fixedPixelBuffer;
-    unsigned char* rgbeBuffer;
+    Magick::Quantum* fixedPixelBuffer = NULL;
+    unsigned char* rgbeBuffer = NULL;
     try {
         Magick::Image image;
         image.read(argv[1]);
@@ -112,14 +112,18 @@ int main(int argc, char **argv)
     }
     catch (Magick::Exception &error_)
     {
-        delete [] fixedPixelBuffer;
-        delete [] rgbeBuffer;
         cout << "Caught exception: " << error_.what() << endl;
+        if (fixedPixelBuffer)
+        delete [] fixedPixelBuffer;
+        if (rgbeBuffer)
+        delete [] rgbeBuffer;
         Magick::TerminateMagick();
         return 1;
     }
-    delete [] fixedPixelBuffer;
-    delete [] rgbeBuffer;
+    if (fixedPixelBuffer)
+        delete [] fixedPixelBuffer;
+    if (rgbeBuffer)
+        delete [] rgbeBuffer;
     Magick::TerminateMagick();
     return 0;
 }
